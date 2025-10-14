@@ -2,7 +2,7 @@ import os
 from markdown_blocks import markdown_to_html_node
 from gencontent  import extract_title
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(basepath, dir_path_content, template_path, dest_dir_path):
     print(f"Generating Page for {dir_path_content} to {dest_dir_path}")
     if os.path.isdir(dir_path_content):
 
@@ -13,7 +13,7 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             dst_dir = os.path.join(dest_dir_path, paths)
             if os.path.isdir(src):
                 os.makedirs(dst_dir, exist_ok=True)
-                generate_pages_recursive(src, template_path, dst_dir)
+                generate_pages_recursive(basepath, src, template_path, dst_dir)
                     
             elif os.path.isfile(src):
 
@@ -39,7 +39,7 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
                 title = extract_title(markdown_content)
                 template = template.replace("{{ Title }}", title)
                 template = template.replace("{{ Content }}", html)
-
+                template = template.replace('href="/', f'href="{basepath}')
 
                 to_file = open(dst_file, "w")
                 to_file.write(template)
