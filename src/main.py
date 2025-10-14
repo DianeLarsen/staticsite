@@ -12,7 +12,7 @@ template_path = "./template.html"
 
 
 def main():
-    basepath = sys.argv[0]
+    basepath = sys.argv[0] or "/"
     print("Deleting public directory...")
     if os.path.exists(dir_path_public):
         shutil.rmtree(dir_path_public)
@@ -23,9 +23,9 @@ def main():
     print("Generating page...")
     generate_pages_recursive(
         basepath,
-        os.path.join(dir_path_content),
+        dir_path_content,
         template_path,
-        os.path.join(dir_path_public),
+        dir_path_public,
     )
 
 
